@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In Our Secret Garden 🌸🍃</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  :root{
+    --leaf-1:#a8e6cf; --leaf-2:#66bb6a; --leaf-3:#388e3c;
+    --pink-1:#ffe6ee; --pink-2:#ffb6c1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Kanit',sans-serif;
+    min-height:100vh;
+    color:#2d4a3e;
+    position:relative;
+    overflow-x:hidden;
+    background:linear-gradient(180deg,#dff3e3 0%,#f3fbe9 28%,#fff3f7 62%,#ffe3ec 100%);
+  }
+
+  .garden-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .floating-element{position:absolute;font-size:22px;animation:floatUp 9s linear infinite;opacity:0;}
+  @keyframes floatUp{
+    0%{transform:translateY(105vh) rotate(0deg) scale(.8);opacity:0;}
+    15%{opacity:.85;}
+    85%{opacity:.85;}
+    100%{transform:translateY(-10vh) rotate(360deg) scale(1.15);opacity:0;}
+  }
+
+  .hills{position:fixed;left:0;right:0;bottom:0;width:100%;height:22vh;min-height:150px;z-index:1;pointer-events:none;}
+  .hills svg{width:100%;height:100%;display:block;}
+
+  /* ---------- หน้าที่ 1: สวนเปล่า + ปุ่มเปิดประตูสวน ---------- */
+  .screen{
+    position:relative;z-index:2;
+    min-height:100vh;
+    width:100%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:32px 18px 20vh;
+    transition:opacity .5s ease;
+  }
+  #introScreen{
+    text-align:center;
+  }
+  .gate-icon{
+    font-size:64px;
+    margin-bottom:18px;
+    animation:plantBloom .9s cubic-bezier(.175,.885,.32,1.275) forwards, windSway 3.4s ease-in-out infinite .9s;
+  }
+  .intro-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:linear-gradient(135deg,var(--leaf-1) 0%,#ffd3b6 100%);
+    color:#2e5a44;font-size:13px;font-weight:600;
+    padding:7px 20px;border-radius:50px;margin-bottom:16px;
+    box-shadow:0 4px 12px rgba(168,230,207,.4);
+  }
+  .intro-title{
+    font-family:'Fredoka','Kanit',sans-serif;
+    font-size:28px;font-weight:700;color:var(--leaf-3);
+    margin-bottom:10px;line-height:1.35;
+    text-shadow:0 2px 5px rgba(56,142,60,.15);
+  }
+  .intro-sub{
+    font-size:14px;color:#5a6b5f;margin-bottom:36px;max-width:320px;
+  }
+  .enter-btn{
+    background:linear-gradient(135deg,#81c784 0%,#ffb74d 100%);
+    border:none;color:#fff;font-family:'Kanit',sans-serif;
+    font-size:15px;font-weight:600;
+    padding:16px 40px;border-radius:50px;cursor:pointer;
+    box-shadow:0 10px 26px rgba(129,199,132,.45);
+    transition:all .3s cubic-bezier(.175,.885,.32,1.275);
+  }
+  .enter-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 32px rgba(102,187,106,.55);}
+
+  /* ---------- หน้าที่ 2: การ์ดอวยพร ---------- */
+  #cardScreen{display:none;}
+  .scene{position:relative;width:100%;max-width:520px;}
+
+  .vine{position:absolute;font-size:30px;opacity:.9;filter:drop-shadow(0 2px 3px rgba(0,0,0,.08));}
+  .vine.tl{top:-26px;left:-2px;transform:rotate(-12deg);}
+  .vine.tl2{top:-30px;left:62px;transform:rotate(6deg) scale(.85);}
+  .vine.tr{top:-26px;right:-2px;transform:rotate(12deg) scaleX(-1);}
+  .vine.tr2{top:-30px;right:62px;transform:rotate(-6deg) scaleX(-1) scale(.85);}
+
+  .card{
+    position:relative;
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border:3px solid #eaf6ec;
+    border-radius:40px;
+    padding:44px 26px 34px;
+    text-align:center;
+    box-shadow:0 24px 55px rgba(46,125,50,.16), inset 0 0 15px rgba(255,182,193,.18);
+    animation:gardenAppear .8s cubic-bezier(.175,.885,.32,1.275);
+  }
+  @keyframes gardenAppear{from{opacity:0;transform:scale(.85) translateY(30px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:linear-gradient(135deg,var(--leaf-1) 0%,#ffd3b6 100%);
+    color:#2e5a44;font-size:13px;font-weight:600;
+    padding:7px 20px;border-radius:50px;margin-bottom:14px;
+    box-shadow:0 4px 12px rgba(168,230,207,.4);
+  }
+
+  h1{
+    font-family:'Fredoka','Kanit',sans-serif;
+    font-size:26px;font-weight:700;color:var(--leaf-3);
+    margin-bottom:26px;line-height:1.35;
+    text-shadow:0 2px 5px rgba(56,142,60,.15);
+  }
+
+  .message-box{
+    position:relative;
+    background:linear-gradient(180deg,#f4f9ec 0%,#fff5f8 100%);
+    border:2px dashed #a5d6a7;
+    border-radius:26px;
+    padding:30px 22px 26px;
+    min-height:170px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    margin-bottom:26px;
+    font-size:15px;font-weight:400;line-height:1.85;color:#37474f;
+    transition:opacity .35s ease;
+    box-shadow:inset 0 2px 8px rgba(165,214,167,.2);
+  }
+  .message-box.empty{
+    color:#8aa090;
+    font-size:14px;
+    font-style:italic;
+  }
+  .corner-sprig{position:absolute;bottom:10px;left:14px;font-size:18px;opacity:.85;}
+  .corner-bloom{position:absolute;top:12px;right:16px;font-size:18px;opacity:.85;}
+
+  .plant-stage{
+    width:74px;height:74px;border-radius:50%;
+    background:#ffffff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:34px;margin-bottom:14px;
+    box-shadow:0 6px 16px rgba(102,187,106,.25), inset 0 0 0 3px #eef7ee;
+    animation:plantBloom .8s cubic-bezier(.175,.885,.32,1.275) forwards, windSway 3s ease-in-out infinite .8s;
+  }
+  @keyframes plantBloom{0%{transform:scale(0) translateY(25px);opacity:0;}60%{transform:scale(1.2) translateY(-6px);opacity:1;}100%{transform:scale(1) translateY(0);opacity:1;}}
+  @keyframes windSway{0%,100%{transform:rotate(0deg);}30%{transform:rotate(-6deg);}70%{transform:rotate(6deg);}}
+
+  .divider{width:56px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--leaf-1),#ffd3b6);margin-bottom:16px;}
+
+  .btn-group{display:flex;flex-direction:column;gap:12px;}
+  .btn{
+    background:#ffffff;border:2px solid #c8e6c9;color:#2e7d32;
+    padding:14px 20px;border-radius:50px;
+    font-family:'Kanit',sans-serif;font-size:14px;font-weight:500;
+    cursor:pointer;transition:all .3s cubic-bezier(.175,.885,.32,1.275);
+    outline:none;text-decoration:none;display:block;
+    box-shadow:0 4px 12px rgba(200,230,201,.4);
+  }
+  .btn:hover{background:#e8f5e9;border-color:#66bb6a;color:#1b5e20;transform:translateY(-3px) scale(1.02);box-shadow:0 8px 20px rgba(102,187,106,.3);}
+  .btn-garden{
+    background:linear-gradient(135deg,#81c784 0%,#ffb74d 100%);border:none;color:#fff;
+    font-weight:600;margin-top:6px;box-shadow:0 8px 22px rgba(129,199,132,.4);
+  }
+  .btn-garden:hover{background:linear-gradient(135deg,#66bb6a 0%,#ffa726 100%);color:#fff;transform:translateY(-3px) scale(1.03);box-shadow:0 12px 28px rgba(102,187,106,.55);}
+</style>
+</head>
+<body>
+
+  <div class="garden-bg" id="gardenBg"></div>
+
+  <div class="hills">
+    <svg viewBox="0 0 800 220" preserveAspectRatio="none">
+      <path d="M0,120 C150,60 280,150 420,100 C560,55 650,130 800,90 L800,220 L0,220 Z" fill="#7fbf7a"/>
+      <path d="M0,160 C180,110 320,190 480,140 C620,100 700,170 800,140 L800,220 L0,220 Z" fill="#4f9a55"/>
+      <g>
+        <rect x="55" y="150" width="8" height="40" fill="#6d4c2f"/>
+        <circle cx="59" cy="140" r="26" fill="#5aa85a"/>
+        <circle cx="42" cy="150" r="18" fill="#6bbf6b"/>
+        <circle cx="78" cy="150" r="18" fill="#6bbf6b"/>
+      </g>
+      <g>
+        <rect x="95" y="160" width="7" height="34" fill="#6d4c2f"/>
+        <circle cx="99" cy="152" r="20" fill="#68b868"/>
+      </g>
+      <g>
+        <rect x="700" y="145" width="8" height="42" fill="#6d4c2f"/>
+        <circle cx="704" cy="134" r="27" fill="#5aa85a"/>
+        <circle cx="686" cy="145" r="18" fill="#6bbf6b"/>
+        <circle cx="724" cy="145" r="18" fill="#6bbf6b"/>
+      </g>
+      <g>
+        <rect x="748" y="158" width="6" height="32" fill="#6d4c2f"/>
+        <circle cx="751" cy="150" r="18" fill="#68b868"/>
+      </g>
+      <circle cx="70" cy="200" r="6" fill="#ff6f9c"/>
+    </svg>
+  </div>
+
+  <!-- ================= หน้าที่ 1: สวนเปล่า ================= -->
+  <div class="screen" id="introScreen">
+    <div class="gate-icon">🌷</div>
+    <div class="intro-badge">🌸 Our Secret Garden 🌿</div>
+    <div class="intro-title">Welcome to Our Garden of Love</div>
+    <div class="intro-sub">Click the button below to discover hidden messages in our garden</div>
+    <button class="enter-btn" onclick="enterGarden()">🚪 Enter Our Garden</button>
+  </div>
+
+  <!-- ================= หน้าที่ 2: การ์ดอวยพร ================= -->
+  <div class="screen" id="cardScreen">
+    <div class="scene">
+      <div class="vine tl">🌿</div>
+      <div class="vine tl2">🍃</div>
+      <div class="vine tr">🌿</div>
+      <div class="vine tr2">🍃</div>
+
+      <div class="card">
+        <div class="badge">🌸 Welcome to Our Garden 🌿</div>
+        <h1>Happy Birthday &amp; Anniversary 💐✨</h1>
+
+        <div class="message-box empty" id="msgBox">
+          🌱 Tap a button below to read my heart 🌸
+        </div>
+
+        <div class="btn-group">
+          <button class="btn" onclick="showMessage(0)">🎂 Special Birthday Wish 🌸</button>
+          <button class="btn" onclick="showMessage(1)">💍 Happy Anniversary 🌿</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const plants = ["🌷", "🌻"];
+  const messages = [
+    "สุขสันต์วันเกิดนะอ้วน ปีนี้พิเศษเป็นสองเท่า เพราะเป็นทั้งวันที่เธอเติบโตขึ้นอย่างงดงาม และเป็นวันที่เราได้ฉลองความรักไปด้วยกัน ขอบคุณทุกความทรงจำดีๆ ที่ร่วมสร้างกันมา ขอให้ปีนี้ใจดีกับเธอมากๆ และไม่ว่าจะเจออะไร ให้รู้ไว้นะว่าเธอจะมีเค้าคอยจับมืออยู่ตรงนี้เสมอ สุขสันต์วันนะคะน้องอ้วน 🎂💖",
+    "วันที่เราทั้ง2คนได้เดินจับมือกันมา ขอบคุณที่คอยซัพพอร์ตและน่ารักกับเค้าเสมอ และเป็นความสดใสให้กันเสมอ ไม่ว่าวันเวลาจะผ่านไปนานแค่ไหน เธอก็ยังเป็นความโชคดีที่สุดในชีวิตเค้าเหมือนเดิม รักมากขึ้นทุกวันเลยนะ รอวันที่เราได้อยู่ด้วยกันนะน้องอ้วน 💍🥰"
+  ];
+
+  function createGardenBackground(){
+    const bg = document.getElementById('gardenBg');
+    const items = ['🌸','🌷','🌹','🌻','🍃','🦋','🐝','🌼'];
+    for (let i=0;i<20;i++){
+      const el = document.createElement('div');
+      el.className='floating-element';
+      el.innerText = items[Math.floor(Math.random()*items.length)];
+      el.style.left = Math.random()*100 + 'vw';
+      el.style.animationDuration = (Math.random()*5+6)+'s';
+      el.style.animationDelay = (Math.random()*6)+'s';
+      bg.appendChild(el);
+    }
+  }
+
+  function triggerConfetti(){
+    confetti({
+      particleCount: 75,
+      spread: 65,
+      origin: { y: 0.6 },
+      colors: ['#a8e6cf','#dbedc6','#ffd3b6','#ffaaa5','#ff8b94']
+    });
+  }
+
+  function showMessage(index){
+    const msgBox = document.getElementById('msgBox');
+    msgBox.classList.remove('empty');
+    msgBox.style.opacity = 0;
+    setTimeout(() => {
+      msgBox.innerHTML = `
+        <div class="corner-bloom">🌸</div>
+        <div class="plant-stage">${plants[index]}</div>
+        <div class="divider"></div>
+        <div>${messages[index]}</div>
+        <div class="corner-sprig">🌿</div>
+      `;
+      msgBox.style.opacity = 1;
+      triggerConfetti();
+    }, 180);
+  }
+
+  function enterGarden(){
+    const intro = document.getElementById('introScreen');
+    const cardScreen = document.getElementById('cardScreen');
+    intro.style.opacity = 0;
+    setTimeout(() => {
+      intro.style.display = 'none';
+      cardScreen.style.display = 'flex';
+      cardScreen.style.flexDirection = 'column';
+      cardScreen.style.alignItems = 'center';
+      cardScreen.style.justifyContent = 'center';
+      cardScreen.style.opacity = 0;
+      requestAnimationFrame(() => { cardScreen.style.opacity = 1; });
+      // กล่องข้อความจะว่างไว้ก่อน รอผู้ใช้กดปุ่มเลือกข้อความเอง
+    }, 400);
+  }
+
+  createGardenBackground();
+</script>
+</body>
+</html>
